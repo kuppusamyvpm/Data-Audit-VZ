@@ -1,0 +1,28 @@
+package com.charge.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.charge.demo.model.charge;
+
+public interface chargeRepo extends JpaRepository<charge, String> 
+{
+
+//	List<charge> findAll();
+	String compared_charge="select from sv where account_name='abd17'";
+   
+	@Query(nativeQuery = true,value = compared_charge)
+    List<charge> getcharge2();
+
+    
+//    @Query("select ACCOUNT_NAME from comp_charge WHERE ACCOUNT_NAME= :acc_no")
+//    charge findUserByStatusAndNameNamedParams(
+//      @Param("acc_no") String acc_no); 
+    
+    @Query(value = "select ACCOUNT_NAME,BILLING_PERIOD from COMP_CHARGE where ACCOUNT_NAME=:acc_no || BILL_TYPE=:bil_type", nativeQuery = true)
+    String findByKeyword(@Param("acc_no") String acc_no,@Param("bil_type") String  bil_type );
+      
+}

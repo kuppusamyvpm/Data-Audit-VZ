@@ -1,0 +1,106 @@
+package com.charge.demo.controller;
+
+import java.io.Console;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.charge.demo.model.ccabs_charge;
+import com.charge.demo.model.charge;
+import com.charge.demo.repository.chargeRepo;
+//import com.charge.demo.repository.map;
+import com.charge.demo.service.chargeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
+@RestController
+@CrossOrigin("*")
+public class chargeController 
+{
+	@Autowired
+	private chargeRepo cr;
+	
+	@Autowired
+	private chargeService cs;
+	
+//	,@PathVariable String bil_type
+	
+	@RequestMapping("/ccabs/{acc_no}/{billtype}")
+	 List<String> method(@PathVariable String acc_no,@PathVariable String billtype) 
+	{
+		System.out.print(billtype);
+		System.out.print(acc_no);
+//		String result = "";
+//		ObjectMapper mapper = new ObjectMapper();
+		List<String> c=cr.findByKeyword(acc_no,billtype);
+//		System.out.print(c.get(0));
+//		Gson json=new Gson();
+//		String response=json.toJson(c);
+//		System.out.print(response);
+		return c;
+	}
+		
+//		 JSONObject responseDetailsJson = new JSONObject();
+//		    JSONArray jsonArray = new JSONArray();
+//		    List<ccabs_charge> cartList = new Vector<cc>(cartMap.keySet().size());
+//		    for( String cc : c) {
+//	        cartList.add(cc);
+//		        JSONObject formDetailsJson = new JSONObject();
+//		        formDetailsJson.put("billperiod",);
+//		        formDetailsJson.put("customername","CUSTOMER_NAME");
+//		        formDetailsJson.put("accountname","ACCOUNT_NAME");
+//		        formDetailsJson.put("billtype","BILL_TYPE");
+//		        formDetailsJson.put("marketid","MARKET_ID");
+//		        formDetailsJson.put("WC_ICC");
+//		        formDetailsJson.put("LATA");
+//		        formDetailsJson.put("CIC");
+//		        formDetailsJson.put("CCABS_CHARGE");
+//		        formDetailsJson.put("SV_CHARGE");
+//		        formDetailsJson.put("DIFF_CHARGE");
+//		        
+//		       jsonArray.add(formDetailsJson);
+//		    }
+//		    responseDetailsJson.put("forms", jsonArray);//Here you can see the data in json format
+//		    return cartList;
+//		return c;
+//	
+//	
+	
+	
+	@GetMapping("/ccabs")
+    @CrossOrigin(origins="http://localhost:4200")
+	public List<charge>fetchbyuserList() 
+	{
+	 List<charge> a=new ArrayList<charge>();
+	 a=cs.fetchbyuserList();
+	 return a;
+	}
+	
+	
+	
+//	public charge table1call(@RequestBody charge user) throws Exception {
+//	       
+//        String tempaccname=user.getACCOUNT_NAME();
+//        int tempbillperiod=user.getBILLING_PERIOD();
+//        charge userobj= cs.fetchUserByAccountAndBill(tempaccname,tempbillperiod);
+//        return userobj;
+//        }
+	
+  
+  
+  
+}

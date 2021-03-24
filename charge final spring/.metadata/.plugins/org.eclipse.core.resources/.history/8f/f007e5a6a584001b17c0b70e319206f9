@@ -1,0 +1,22 @@
+package com.charge.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.charge.demo.model.charge;
+
+public interface chargeRepo extends JpaRepository<charge, String> 
+{
+
+	List<charge> findAll();
+//	String compared_charge="select * from COMP_CHARGE where RECORD_TYPE_ID=1";
+	
+	String compared_charge1="select * from COMP_CHARGE where ACCOUNT_NAME="+acc_no;
+	
+   
+	@Query(nativeQuery = true,value = compared_charge1)
+    List<charge> getcharge2();
+
+}

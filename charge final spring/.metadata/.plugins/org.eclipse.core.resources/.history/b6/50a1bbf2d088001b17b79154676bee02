@@ -1,0 +1,113 @@
+package com.charge.demo.model;
+
+import java.util.Map;
+
+import javax.persistence.Id;
+
+public class overall_projection {
+	
+	
+	String  BILLING_PERIOD ;	
+	String BILL_TYPE;                                                                                    
+	String CCABS_CHARGE;                            
+	 String SV_CHARGE;                              
+	 String DIFF_CHARGE;                              
+
+	 String CCABS_USAGE;
+	 String SV_USAGE;                              
+	 String DIFF_USAGE;                              
+	 String CCABS_VOLUME;
+	 String SV_VOLUME;
+	 String DIFF_VOLUME;
+	 public overall_projection()
+	 {
+		 
+	 }
+	 public overall_projection(String bILLING_PERIOD, String bILL_TYPE, String cCABS_CHARGE, String sV_CHARGE, String dIFF_CHARGE,
+			 String cCABS_USAGE, String sV_USAGE, String dIFF_USAGE, String cCABS_VOLUME, String sV_VOLUME,
+				String dIFF_VOLUME) {
+			super();
+			BILLING_PERIOD = bILLING_PERIOD;
+			BILL_TYPE = bILL_TYPE;
+			CCABS_CHARGE = cCABS_CHARGE;
+			SV_CHARGE = sV_CHARGE;
+			DIFF_CHARGE = dIFF_CHARGE;
+			
+			CCABS_USAGE = cCABS_USAGE;
+			SV_USAGE = sV_USAGE;
+			DIFF_USAGE = dIFF_USAGE;
+			CCABS_VOLUME = cCABS_VOLUME;
+			SV_VOLUME = sV_VOLUME;
+			DIFF_VOLUME = dIFF_VOLUME;
+		}
+	 public String getBILLING_PERIOD() {
+			return BILLING_PERIOD;
+		}
+		public void setBILLING_PERIOD(String bILLING_PERIOD) {
+			BILLING_PERIOD = bILLING_PERIOD;
+		}
+		public String getBILL_TYPE() {
+			return BILL_TYPE;
+		}
+		public void setBILL_TYPE(String bILL_TYPE) {
+			BILL_TYPE = bILL_TYPE;
+		}
+		public String getCCABS_CHARGE() {
+			return CCABS_CHARGE;
+		}
+		public void setCCABS_CHARGE(String cCABS_CHARGE) {
+			CCABS_CHARGE = cCABS_CHARGE;
+		}
+		public String getSV_CHARGE() {
+			return SV_CHARGE;
+		}
+		public void setSV_CHARGE(String sV_CHARGE) {
+			SV_CHARGE = sV_CHARGE;
+		}
+		public String getDIFF_CHARGE() {
+			return DIFF_CHARGE;
+		}
+		public void setDIFF_CHARGE(String dIFF_CHARGE) {
+			DIFF_CHARGE = dIFF_CHARGE;
+		}
+	
+		public String getCCABS_USAGE() {
+			return CCABS_USAGE;
+		}
+		public void setCCABS_USAGE(String cCABS_USAGE) {
+			CCABS_USAGE = cCABS_USAGE;
+		}
+		public String getSV_USAGE() {
+			return SV_USAGE;
+		}
+		public void setSV_USAGE(String sV_USAGE) {
+			SV_USAGE = sV_USAGE;
+		}
+		public String getDIFF_USAGE() {
+			return DIFF_USAGE;
+		}
+		public void setDIFF_USAGE(String dIFF_USAGE) {
+			DIFF_USAGE = dIFF_USAGE;
+		}
+		public String getCCABS_VOLUME() {
+			return CCABS_VOLUME;
+		}
+		public void setCCABS_VOLUME(String cCABS_VOLUME) {
+			CCABS_VOLUME = cCABS_VOLUME;
+		}
+		public String getSV_VOLUME() {
+			return SV_VOLUME;
+		}
+		public void setSV_VOLUME(String sV_VOLUME) {
+			SV_VOLUME = sV_VOLUME;
+		}
+		public String getDIFF_VOLUME() {
+			return DIFF_VOLUME;
+		}
+		public void setDIFF_VOLUME(String dIFF_VOLUME) {
+			DIFF_VOLUME = dIFF_VOLUME;
+		}
+	 
+	
+	
+}

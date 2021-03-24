@@ -1,0 +1,210 @@
+package com.charge.demo.repository;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties.Jdbc;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.charge.demo.model.ccabs_charge;
+import com.charge.demo.model.charge;
+
+public interface chargeRepo extends JpaRepository<charge, List<String>> 
+{
+
+	
+    @Query(value ="\r\n"
+    		+ "\r\n"
+    		+ "select\r\n"
+    		+ "ccabs.ACCOUNT_NAME,ccabs.MARKET_ID,ccabs.WC_ICC,ccabs.STATE,ccabs.LATA,ccabs.CIC,\r\n"
+    		+ "ccabs.charge ccabs_charge,\r\n"
+    		+ "sv.charge sv_charge,(sv.charge-ccabs.charge) diff_charge,ccabs.BILLING_PERIOD\r\n"
+    		+ "from (\r\n"
+    		+ "select\r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,sum(Charge) CHARGE\r\n"
+    		+ "from\r\n"
+    		+ "ccabs_charge\r\n"
+    		+ "where\r\n"
+    		+ "record_type_id=2\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billtype\r\n"
+    		+ "and\r\n"
+    		+ "account_name=:acc_no\r\n"
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC) ccabs,\r\n"
+    		+ "(\r\n"
+    		+ "select\r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,sum(CHARGE) CHARGE\r\n"
+    		+ "from\r\n"
+    		+ "sv_charge\r\n"
+    		+ "where\r\n"
+    		+ "record_type_id=2\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billtype\r\n"
+    		+ "and\r\n"
+    		+ "account_name=:acc_no\r\n"
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC) sv\r\n"
+    		+ "\r\n"
+    		+ "where\r\n"
+    		+ "ccabs.account_Name=sv.account_name(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.wc_icc=sv.wc_icc(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.state=sv.state(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.lata=sv.lata(+)", nativeQuery = true)
+   
+    List<String> findByKeyword(@Param("acc_no") String acc_no,@Param("billtype") String billtype);
+//    accountnbr,market_id,wc_icc,lata,cic,ccabs_charge,sv_charge,differ_charge
+
+    
+    
+
+//    level2
+    
+    @Query(value ="select\r\n"
+    		+ "ccabs.ACCOUNT_NAME,ccabs.MARKET_ID,ccabs.WC_ICC,ccabs.STATE,ccabs.LATA,ccabs.CIC,ccabs.end_office,\r\n"
+    		+ "ccabs.charge ccabs_charge,\r\n"
+    		+ "sv.charge sv_charge,(sv.charge-ccabs.charge) diff_charge,ccabs.BILLING_PERIOD from\r\n"
+    		+ "(select\r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC, STATE,LATA, CIC,end_office,sum(CHARGE) CHARGE\r\n"
+    		+ "from\r\n"
+    		+ "ccabs_charge\r\n"
+    		+ "where\r\n"
+    		+ "record_type_id=2\r\n"	
+    		+ "and\r\n"
+    		+ "account_name=:accountnbr\r\n"
+    		+ "and\r\n"
+    		+ "wc_icc=:wc_icc\r\n"
+    		+ "and\r\n"
+    		+ "state=:state\r\n"
+    		+ "and\r\n"
+    		+ "lata=:lata\r\n"
+    		+ "and\r\n"
+    		+ "cic=:cic\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billing_period\r\n"
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE,LATA, CIC,end_office) ccabs ,\r\n"
+    		+ "(select\r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,end_office,sum(CHARGE) CHARGE\r\n"
+    		+ "from\r\n"
+    		+ "sv_charge\r\n"
+    		+ "where\r\n"
+    		+ "record_type_id=2\r\n"
+    		+ "and\r\n"
+    		+ "account_name=:accountnbr\r\n"
+    		+ "and\r\n"
+    		+ "wc_icc=:wc_icc\r\n"
+    		+ "and\r\n"
+    		+ "state=:state\r\n"
+    		+ "and\r\n"
+    		+ "lata=:lata\r\n"
+    		+ "and\r\n"
+    		+ "cic=:cic\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billing_period\r\n" 		
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID,\r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,end_office) sv\r\n"
+    		+ "where\r\n"
+    		+ "ccabs.account_Name=sv.account_name(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.wc_icc=sv.wc_icc(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.state=sv.state(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.lata=sv.lata(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.end_office=sv.end_office(+)", nativeQuery = true)
+ 
+    
+      
+    List<String> findByLevel2(@Param("accountnbr") String accountnbr,@Param("wc_icc") String wc_icc,
+    		@Param("state") String state,@Param("lata") int lata,
+    		@Param("cic") int cic,@Param("billing_period") int billing_period);
+    
+    
+    //level3
+    
+    @Query(value ="select \r\n"
+    		+ "ccabs.ACCOUNT_NAME,ccabs.MARKET_ID,ccabs.WC_ICC,ccabs.state,\r\n"
+    		+ "ccabs.LATA,ccabs.CIC,ccabs.end_office,ccabs.traffic_type,\r\n"
+    		+ "ccabs.charge ccabs_charge,\r\n"
+    		+ "sv.charge sv_charge,(sv.charge-ccabs.charge) diff_charge,ccabs.BILLING_PERIOD from\r\n"
+    		+ "(select \r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID, \r\n"
+    		+ "WC_ICC,STATE,LATA, CIC,end_office,Traffic_type,sum(CHARGE) CHARGE \r\n"
+    		+ "from\r\n"
+    		+ "ccabs_charge\r\n"
+    		+ "where \r\n"
+    		+ "record_type_id=2\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billing_period\r\n"
+    		+ "and\r\n"
+    		+ "account_name=:accountnbr\r\n"
+    		+ "and\r\n"
+    		+ "wc_icc=:wc_icc\r\n"
+    		+ "and\r\n"
+    		+ "state=:state\r\n"
+    		+ "and\r\n"
+    		+ "lata=:lata\r\n"
+    		+ "and\r\n"
+    		+ "cic=:cic\r\n"
+    		+ "and\r\n"
+    		+ "end_office=:end_office\r\n"
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID, \r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,end_office,traffic_type) ccabs,\r\n"
+    		+ "(\r\n"
+    		+ "select \r\n"
+    		+ "BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID, \r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,end_office,traffic_type,sum(CHARGE) CHARGE \r\n"
+    		+ "from\r\n"
+    		+ "sv_charge\r\n"
+    		+ "where \r\n"
+    		+ "record_type_id=2\r\n"
+    		+ "and\r\n"
+    		+ "billing_period=:billing_period\r\n"
+    		+ "and\r\n"
+    		+ "account_name=:accountnbr\r\n"
+    		+ "and\r\n"
+    		+ "wc_icc=:wc_icc\r\n"
+    		+ "and\r\n"
+    		+ "state=:state\r\n"
+    		+ "and\r\n"
+    		+ "lata=:lata\r\n"
+    		+ "and\r\n"
+    		+ "cic=:cic\r\n"
+    		+ "and\r\n"
+    		+ "end_office=:end_office\r\n"
+    		+ "group by BILLING_PERIOD,CUSTOMER_NAME, ACCOUNT_NAME, BILL_TYPE, MARKET_ID, \r\n"
+    		+ "WC_ICC,STATE, LATA, CIC,end_office,traffic_type) sv\r\n"
+    		+ "where \r\n"
+    		+ "ccabs.account_Name=sv.account_name(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.wc_icc=sv.wc_icc(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.state=sv.state(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.lata=sv.lata(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.end_office=sv.end_office(+)\r\n"
+    		+ "and\r\n"
+    		+ "ccabs.traffic_type=sv.traffic_type(+)", nativeQuery = true)
+    
+    List<String> findByLevel3(@Param("accountnbr") String accountnbr,@Param("wc_icc") String wc_icc,
+    		@Param("state") String state,@Param("lata") int lata,
+    		@Param("cic") int cic,@Param("end_office") String end_office,@Param("billing_period") int billing_period);
+    
+   
+    
+    
+}

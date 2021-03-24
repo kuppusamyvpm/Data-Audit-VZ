@@ -1,0 +1,29 @@
+package com.charge.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.charge.demo.model.charge;
+import com.charge.demo.model.overallprojection;
+import com.charge.demo.repository.chargeRepo;
+import com.charge.demo.repository.overallprojectionRepo;
+
+@Service
+public class overallprojectionService
+{
+	@Autowired
+	private overallprojectionRepo or;
+
+
+
+	
+	  public List<overallprojection> getchargebyrawquery3()
+      {
+          List<overallprojection> b=or.getcharge3();
+          return b;
+       
+
+}
+}

@@ -1,0 +1,26 @@
+package com.charge.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.charge.demo.model.overallprojection;
+
+public interface overallprojectionRepo extends JpaRepository<overallprojection,List<String>> 
+{
+	  String ab="SELECT * from table";
+	    @Query(nativeQuery = true,value = ab)  List<overallprojection> getcharge3();
+}
+
+//BILLING_PERIOD;
+//	String BILL_TYPE;
+//	String CCABS_CHARGE;
+//	String SV_CHARGE;
+//	String DIFF_CHARGE; 
+//	String CCABS_USAGE; 
+//	String SV_USAGE;
+//	String DIFF_USAGE; 
+//	String CCABS_VOLUME;
+//	String SV_VOLUME;
+//	String DIFF_VOLUME;

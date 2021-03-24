@@ -1,0 +1,16 @@
+package com.charge.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.charge.demo.model.charge;
+
+public interface chargeRepo extends JpaRepository<charge, String> 
+{
+
+	List<charge> findAll();
+
+	
+
+}

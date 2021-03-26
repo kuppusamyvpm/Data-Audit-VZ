@@ -1,5 +1,0 @@
-package com.charge.demo.repository;
-
-public interface overallprojectionRepo {
-
-}
